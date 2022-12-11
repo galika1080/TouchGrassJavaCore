@@ -5,6 +5,7 @@ import java.util.Set;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIgnore;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 
@@ -20,8 +21,8 @@ import lombok.NoArgsConstructor;
 @DynamoDBTable(tableName = "Events")
 public class Event {
     
-    @DynamoDBHashKey(attributeName = "EpochSeconds")
-    private long epochSeconds;
+    @DynamoDBHashKey(attributeName = "Date")
+    private String date;
 
     @DynamoDBRangeKey(attributeName = "Name")
     private String name;
@@ -38,6 +39,9 @@ public class Event {
     @DynamoDBAttribute(attributeName = "Tags")
     private Set<String> tags;
 
+    @DynamoDBAttribute(attributeName = "rs")
+    private Float relevanceScore;
+
     public void addTag(String tag) {
         tags.add(tag);
     }
@@ -46,7 +50,7 @@ public class Event {
         return tags.remove(tag);
     }
 
-    public Date getDate() {
-        return new Date(epochSeconds * 1000);
+    public void clearTags() {
+        tags.clear();
     }
 }
